@@ -13,14 +13,34 @@ fi
 ##          sudo chmod +x ubuntu-proxy-install.sh
 ## So please contribute if you feel something can be added to this script... Thank you -SomeGuru
 
+## Setup information
 export a_proxy=http://xxx.xxx.xxx.xxx:80
+export f_proxy=ftp://xxx.xxx.xxx.xxx:91
+export s_proxy=http://proxy-dmz.xxx.xxx.xxx:1080
 export http_proxy=${a_proxy}
 export https_proxy=${a_proxy}
-export ftp_proxy=${a_proxy}
+export ftp_proxy=${f_proxy}
+export socks_proxy=${s_proxy}
 
-sudo echo 'Acquire::http::Proxy "${a_proxy}";' >> /etc/apt/apt.conf
-
+## etc/environment Information
 sudo echo "export a_proxy=${a_proxy}" >> /etc/environment
 sudo echo "export http_proxy=${a_proxy}" >> /etc/environment
 sudo echo "export https_proxy=${a_proxy}" >> /etc/environment
-sudo echo "export ftp_proxy=${a_proxy}" >> /etc/environment
+sudo echo "export ftp_proxy=${f_proxy}" >> /etc/environment
+sudo echo "export socks_proxy=${s_proxy}" >> /etc/environment
+
+## apt.conf Information
+sudo echo 'Acquire::http::proxy "${a_proxy}";' >> /etc/apt/apt.conf
+sudo echo 'Acquire::https::proxy "${a_proxy};' >> /etc/apt/apt.conf
+sudo echo 'Acquire::ftp::proxy "${f_proxy};' >> /etc/apt/apt.conf
+sudo echo 'Acquire::socks::proxy "${s_proxy};' >> /etc/apt/apt.conf
+
+## etc/wgetrc Information
+sudo echo "export a_proxy=${a_proxy}" >> /etc/wgetrc
+sudo echo "export http_proxy=${a_proxy}" >> /etc/wgetrc
+sudo echo "export https_proxy=${a_proxy}" >> /etc/wgetrc
+sudo echo "export ftp_proxy=${f_proxy}" >> /etc/wgetrc
+sudo echo "export socks_proxy=${s_proxy}" >> /etc/wgetrc
+
+## fields needing changes are /etc/bash.bashrc
+## fields needing changes is /etc/environment
